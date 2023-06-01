@@ -1,0 +1,295 @@
+
+openapi: 3.0.3
+info:
+  title: Data Product API & Schema definition
+  description: |-
+    This is a sample dataProduct Store Server based on the OpenAPI 3.0 specification.  You can find out more about
+    Swagger at [https://swagger.io](https://swagger.io). In the third iteration of the pet store, we've switched to the design first approach!
+    You can now help us improve the API whether it's by making changes to the definition itself or to the code.
+    That way, with time, we can improve the API in general, and expose some of the new features in OAS3.
+
+    _If you're looking for the Swagger 2.0/OAS 2.0 version of Petstore, then click [here](https://editor.swagger.io/?url=https://petstore.swagger.io/v2/swagger.yaml). Alternatively, you can load via the `Edit > Load dataProduct OAS 2.0` menu option!_
+    
+    Some useful links:
+    - [The dataProduct Store repository](https://github.com/swagger-api/swagger-dataProduct)
+    - [The source API definition for the Pet Store](https://github.com/swagger-api/swagger-dataProduct/blob/master/src/main/resources/openapi.yaml)
+  termsOfService: http://swagger.io/terms/
+  contact:
+    email: apiteam@swagger.io
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+  version: 1.0.11
+externalDocs:
+  description: Find out more about Swagger
+  url: http://swagger.io
+servers:
+  - url: https://dataproduct.swagger.io/api/v3
+tags:
+  - name: DataProduct
+    description: Everything about your dataProduct
+    externalDocs:
+      description: Find out more
+      url: http://swagger.io
+
+paths:
+  /dataProduct:
+    put:
+      tags:
+        - dataProduct
+      summary: Update an existing dataProduct
+      description: Update an existing dataProduct by dpName
+      operationId: updateDataProduct
+      requestBody:
+        description: Update an existent dataProduct in the catalog
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/dataProduct' 
+        required: true
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/dataProduct' 
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/dataProduct'
+        '400':
+          description: Invalid ID supplied
+        '404':
+          description: dataProduct not found
+        '405':
+          description: Validation exception
+      security:
+        - petstore_auth:
+            - write:dataProduct
+            - read:dataProduct
+
+components:
+  schemas:
+    dataProduct:
+      type: object
+      properties:
+        dpName:
+          type: string
+          description: data product name
+          example: KM_assets_info
+        dpVersion:
+          type: string
+          description: ´Version of the data product´
+          example: v1.0
+        dpVersionNotes:
+          type: string
+          description: ´Comments related to the version of the data product´
+          example: initial version
+        dpOwnerEmail:
+          type: string
+          description: ´Email of the data product owner which is unique ID of the Data Owner´
+          example: alois.dornhofer@rbinternational.com
+        dpGDPR:
+          type: string
+          enum: [yes, no]
+          description: ´Should be filled with yes if the data product is GDPR relevant, otherwise with no´
+          example: no
+        dpAcceptableFieldsOfUse:
+          type: string
+          description: ´Needs list of fields/cluster elements from CDPO task)- Defined by Data Product Owner acceptable fields of use (eg. all; marketing; BI for internal use etc.)´
+          example: for all        
+          enum:
+            - for all 
+            - marketing
+            - BI for internal use
+        dpBusinessnessDefinition:
+          type: string
+          description: ´Business Glossary and explanation´
+          example: Total volume of corporate deposits for RBI AND Tracking of daily inflow and outflow of corporate deposits
+        dpDataDomain:
+          type: string
+          description: ´Optional field- for the case in which data has a specific domain´
+          example:
+        dpBCM:
+          type: string
+          description: ´Business Capability Mapping- THE ENUMARATION NEEDS TO BE ADDED´
+          example: Bank Steering - ALM - Balance Sheet Structure Management
+        dpBusinessEntity:
+          type: string
+          description: ´Which type of business has created data( eg. bank, Insurer, leasing, agencies ; processing center ; telecom)´
+          example: bank
+        dpCountry:
+          type: string
+          enum: [HO; AT; AL; BY; BH; CZ; HR; HU; KO; PL; RO;RU;RS;SK;UA]
+          description: ´ISO Code of the country from which data was taken´
+          example: AT
+        dpSourceSystems:
+          type: string
+          description: ´Name key original data source system(s) used to create data product (at least 1) - if it is Data Product, then Data Product ID, if this is data from application, system then ADOIT system's/app ID´
+          example: Denodo
+        dpRelatedDataProducts:
+          type: string
+          description: ´Mention all the data products related to this one(use the name with dp)´
+          example:
+        dpConnectionEndpoint:
+          type: string
+          description: ´The connection endpoint per interface offered by platform´
+          example:
+        dpReadAccessGroup:
+          type: string
+          description: ´READ Access Group unique ID (inline with IAM schema)´
+          example:
+        dpWriteAccessGroupID:
+          type: string
+          description: ´WRITE  Access Group unique ID (inline with IAM schema)´
+          example:
+        dpUserInstructionEndpoint:
+          type: string
+          description: ´User instruction per endpoint (how to consume)´
+          example:
+        dpLinkMarketplace:
+          type: string
+          description: ´Endpoint to start approval workflow (internal, tech attribute (set by platform))´
+          example: https://www.datacatalog.rbigroup.cloud/docs/term/4/
+        dpPlatformId:
+          type: string
+          description: ´Data Platform Identification  (one per platform) - to be computed on platform level´
+          example: Denodo
+        dpRefreshFrequency:
+          type: string
+          description: ´How often data is refreshed can be new computation on input data, replication task run or event against source system or application OR direct query against database´
+          example: D+1
+        dpAvailabilityWindows:
+          type: string
+          description: ´The data availability window (system is up, cluster is up, API works etc.)´
+          example: 24h
+        dpIntegrationType:
+          type: string
+          description: ´Choose from API, Events, Data (stored data), Virtualized Data´
+          enum: [API, Events, Data, Virtualized Data]
+          example: Virtualized Data
+        dpFormat:
+          type: string
+          description: ´Choose from CSV, JSON, Parque, SQL query result, raw S3, REST call result, event etc.´
+          enum: 
+          - CSV
+          - JSON
+          - Parque
+          - SQL query result
+          - raw S3
+          - REST call result
+          - event 
+          example: SQL query result
+        dpSLA:
+          type: string
+          description: ´Link describing platform's SLA AND/OR more specific terms for product itself ´
+          example:
+        dpUsageTermsConditions:
+          type: string
+          description: ´Any restrictions/ conditions on data product usage ; also custom SLA terms as an offer from Data Product Owner´
+          example:
+        dpSampleData:
+          type: string
+          description: ´Represents link to file with sample data.´
+          example:
+        dpPlatformCapabilities:
+          type: string
+          description: ´Link describing platform's capabilities.´
+          example: https://wiki.rbinternational.com/confluence/display/DTS/Group+Data+Virtualization+Platform+%28GDVP%29-+capabilities+map+-+GDR
+        attributes: 
+          type: array
+          items:
+            $ref: '#/components/schemas/attribute'
+       
+        
+        
+          
+    attribute:
+      type: object
+      properties:
+        dpaName:
+          type: string
+          description: ´Name of the attribute (column)´
+          example:   reporting_category
+        dpaTechnicalDescription:
+         type: string
+         description: ´Technical description/explanation of each object type in the dataset incl. attribute "rules" (i.e. no more than 6 characters)´
+         example:
+        dpaSourceSystemName:
+         type: string
+         description: ´Technical description of source attribute linked (if applicable i.e. field is not effect of computing new data) - source system/db/table/attribute´
+         example: reporting_category
+        dpaID: 
+         type: string
+         description: ´Unique identifier of the attribute´
+         example: reporting_category
+        dpaBusinessDescription:
+         type: string
+         description: ´Business description/explanation of each object type  in the dataset if Data taxonomy field is not defined´
+         example: Info, if position belongs to Deposits from Banks, Deposits from Customers, Loans to Banks or Other
+        dpaTermId:
+         type: string
+         description: ´ Field used to map towards taxonomy (business glossary) entry in Group Data Catalog.´
+         example: https://www.datacatalog.rbigroup.cloud/docs/glossary/4/
+        dpaEmpty:
+         type: string
+         enum: [yes, no]
+         description: ´True is the field can be empty´
+         example: no
+        dpaType:
+         type: string
+         enum: [list, string, integer, float]
+         description: ´Type of the attribute´
+         example: list
+        dpaGrouping:
+         type: string
+         description: ´To document possible other grouping inside data product and/or between attributes. Can be use to indicate how data is grouped in sections inside data product OR to indicate different tables being exposed from data product platform´
+         example: 
+        dpaOrigination:
+         type: string
+         description: ´To document data origination - Descriptive - to annotate relation to other data set, data product or attribute lie reference to the attribute in the table in database OR reference to topic (for events) OR reference to API endpoint / call details OR reference to file location, name, structure´
+         example:
+        dpaGDPRTag:
+         type: string
+         enum: [yes, no]
+         description: ´Is yes if the field is GDPR relevant and no if not´
+         example: no
+        dpaExample:
+         type: string
+         description: ´Example of data, anonymized´
+         example: Banking
+        dpaGDPRTypeCategory:
+         type: string
+         description: ´Predefined GDPR approval for specific use-case types´
+         example: Bank
+        
+        
+  requestBodies:
+    dataProduct:
+      description: dataProduct object that needs to be added to the store
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/dataProduct'
+        application/xml:
+          schema:
+            $ref: '#/components/schemas/dataProduct'
+  securitySchemes:
+    petstore_auth:
+      type: oauth2
+      flows:
+        implicit:
+          authorizationUrl: https://petstore3.swagger.io/oauth/authorize
+          scopes:
+            write:pets: modify dataProduct in your account
+            read:pets: read your dataProduct
+    api_key:
+      type: apiKey
+      name: api_key
+      in: header
+
+
+
+
+
+
